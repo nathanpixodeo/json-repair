@@ -24,13 +24,13 @@
   ],
   "license": "MIT",
   "author": "nexkit",
-  "homepage": "https://github.com/nexkit/json-repair#readme",
+  "homepage": "https://github.com/nathanpixodeo/json-repair#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nexkit/json-repair.git"
+    "url": "git+https://github.com/nathanpixodeo/json-repair.git"
   },
   "bugs": {
-    "url": "https://github.com/nexkit/json-repair/issues"
+    "url": "https://github.com/nathanpixodeo/json-repair/issues"
   },
   "type": "module",
   "sideEffects": false,

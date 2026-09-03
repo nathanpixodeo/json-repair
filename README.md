@@ -1,8 +1,8 @@
 # @nexkit/json-repair
 
 [![npm version](https://img.shields.io/npm/v/@nexkit/json-repair.svg)](https://www.npmjs.com/package/@nexkit/json-repair)
-[![CI](https://github.com/nexkit/json-repair/actions/workflows/ci.yml/badge.svg)](https://github.com/nexkit/json-repair/actions/workflows/ci.yml)
-[![license](https://img.shields.io/npm/l/@nexkit/json-repair.svg)](https://github.com/nexkit/json-repair/blob/main/LICENSE)
+[![CI](https://github.com/nathanpixodeo/json-repair/actions/workflows/ci.yml/badge.svg)](https://github.com/nathanpixodeo/json-repair/actions/workflows/ci.yml)
+[![license](https://img.shields.io/npm/l/@nexkit/json-repair.svg)](https://github.com/nathanpixodeo/json-repair/blob/main/LICENSE)
 
 Repair malformed JSON — from LLM output, logs, or hand-edited config — into valid JSON, deterministically and without running any code.
 
@@ -358,7 +358,7 @@ Node.js 18 and later. Ships as ESM (`import`) and CommonJS (`require`), with Typ
 
 ## Contributing
 
-Issues and pull requests are welcome at [github.com/nexkit/json-repair](https://github.com/nexkit/json-repair).
+Issues and pull requests are welcome at [github.com/nathanpixodeo/json-repair](https://github.com/nathanpixodeo/json-repair).
 
 ## License
 
