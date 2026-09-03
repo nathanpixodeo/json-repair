@@ -1,0 +1,97 @@
+# Continuous integration for @nexkit/json-repair.
+#
+# `test` verifies the package on every supported Node.js version (18, 20, 22)
+# on Linux, plus one Windows run, so that platform-specific path/newline bugs
+# in the CLI and portability-check script surface before release. `bench`
+# runs afterwards, once, on the newest supported Node.js version, to record
+# performance numbers for the SRS-mandated budget without slowing down or
+# blocking the main test matrix.
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+# Least-privilege default: this workflow only ever needs to read the repo.
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test (Node ${{ matrix.node-version }}, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      # Every combination must pass; a failure on one Node.js version should
+      # not hide failures on the others.
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [18, 20, 22]
+        include:
+          # One Windows leg, pinned to a single Node.js version, is enough
+          # to catch platform-specific issues (path separators, line
+          # endings, the CLI shebang) without tripling the full matrix.
+          - os: windows-latest
+            node-version: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Check formatting
+        run: npm run format:check
+
+      # The build runs before the tests because test/cli/e2e.test.ts spawns
+      # the real dist/cli.js binary; without dist/ in place it would skip
+      # rather than fail, quietly dropping the only end-to-end coverage.
+      - name: Build
+        run: npm run build
+
+      - name: Test with coverage
+        run: npm run test:coverage
+
+      - name: Verify portable build output
+        run: npm run check:portable
+
+  bench:
+    name: Benchmark (Node 22, ubuntu-latest)
+    runs-on: ubuntu-latest
+    needs: test
+    # Benchmark results are informational: a regression here should not
+    # block merges the way a `test` failure does, so this job is allowed to
+    # fail without turning the whole workflow red.
+    continue-on-error: true
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Run benchmarks
+        run: npm run bench

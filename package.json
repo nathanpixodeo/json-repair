@@ -1,0 +1,97 @@
+{
+  "name": "@nexkit/json-repair",
+  "version": "1.0.0",
+  "description": "Repair malformed JSON from LLMs and real-world text — safely, deterministically, with zero dependencies.",
+  "keywords": [
+    "json",
+    "repair",
+    "fix",
+    "parse",
+    "malformed",
+    "invalid",
+    "llm",
+    "ai",
+    "gpt",
+    "claude",
+    "extract",
+    "markdown",
+    "trailing-comma",
+    "jsonc",
+    "json5",
+    "typescript",
+    "zero-dependency",
+    "cli"
+  ],
+  "license": "MIT",
+  "author": "nexkit",
+  "homepage": "https://github.com/nexkit/json-repair#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nexkit/json-repair.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nexkit/json-repair/issues"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "json-repair": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "bench": "node bench/bench.mjs",
+    "check:portable": "node scripts/check-portable.mjs",
+    "verify": "npm run typecheck && npm run lint && npm run format:check && npm run build && npm run test:coverage && npm run check:portable",
+    "prepublishOnly": "npm run verify"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.15.0",
+    "@types/node": "^22.9.0",
+    "@vitest/coverage-v8": "^3.0.0",
+    "eslint": "^9.15.0",
+    "fast-check": "^3.23.1",
+    "prettier": "^3.3.3",
+    "tsup": "^8.3.5",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.15.0",
+    "vitest": "^3.0.0"
+  }
+}

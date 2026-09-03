@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Test coverage reports
+coverage/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Tool caches
+.eslintcache
+.vitest/
+
+# Editor / IDE directories
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Packed npm tarballs (e.g. from `npm pack`)
+*.tgz
+
+# Per-developer Claude Code settings; the shared ones would live in
+# .claude/settings.json, which is deliberately not ignored.
+.claude/settings.local.json

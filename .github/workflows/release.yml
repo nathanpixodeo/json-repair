@@ -1,0 +1,65 @@
+# Publishes @nexkit/json-repair to npm whenever a `v*` tag is pushed
+# (e.g. `v1.0.0`). The full `npm run verify` gate (typecheck, lint,
+# coverage-checked tests, build, and the portability check) runs again here,
+# independent of CI on the source commit, so that a release always reflects
+# a build that was actually verified at publish time, not just at some
+# earlier point in its history.
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  # Only the publish step needs elevated access, and only to mint an OIDC
+  # token — no write access to repository contents is required.
+  contents: read
+  # package.json sets `publishConfig.provenance: true`, which asks npm to
+  # attach a signed provenance attestation to the published package. That
+  # feature is implemented via GitHub's OIDC token exchange, so the
+  # `id-token: write` permission below is required for `npm publish` to
+  # succeed; without it, the provenance step fails even though nothing else
+  # in this workflow needs it.
+  id-token: write
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          # Required so that `npm publish` authenticates against the public
+          # npm registry using the token below, rather than any registry
+          # configured elsewhere on the runner.
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # A tag that disagrees with package.json would publish a version nobody
+      # can trace back to a commit, and npm will not let it be republished
+      # afterwards. Catch the mismatch before anything is uploaded.
+      - name: Check the tag matches package.json
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          pkg="$(node -p "require('./package.json').version")"
+          if [ "$tag" != "$pkg" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match package.json version $pkg." >&2
+            exit 1
+          fi
+
+      - name: Verify release build
+        run: npm run verify
+
+      - name: Publish to npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

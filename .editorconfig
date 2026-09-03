@@ -1,0 +1,17 @@
+# EditorConfig helps keep formatting consistent across editors and IDEs.
+# See https://editorconfig.org for details.
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Markdown uses trailing whitespace as a meaningful hard-line-break marker,
+# so it must be preserved rather than trimmed.
+[*.md]
+trim_trailing_whitespace = false

@@ -1,0 +1,11 @@
+# Build output and generated reports are never hand-formatted; reformatting
+# them would just create noisy diffs against tooling that already owns them.
+dist
+coverage
+node_modules
+
+# CHANGELOG.md is appended to in a fixed "Keep a Changelog" layout; letting
+# Prettier reflow it risks disturbing that structure. Note that Markdown in
+# general is intentionally NOT ignored here — README.md and friends should
+# stay formatted.
+CHANGELOG.md
