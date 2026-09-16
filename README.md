@@ -360,6 +360,10 @@ Node.js 18 and later. Ships as ESM (`import`) and CommonJS (`require`), with Typ
 
 Issues and pull requests are welcome at [github.com/nathanpixodeo/json-repair](https://github.com/nathanpixodeo/json-repair).
 
+## Support development
+
+If this package helps you, you can [buy me a beer](https://paypal.me/shivakira95).
+
 ## License
 
 MIT © nexkit
